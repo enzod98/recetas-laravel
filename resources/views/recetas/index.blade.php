@@ -1,13 +1,19 @@
-<h1>Recetas</h1>
+@extends('layouts.app')
+
+@section('content')
+
+    <h1>Recetas</h1>
 
 
-@foreach($recetas as $key)
-    <li> {{ $key }} </li>
-@endforeach
+    @foreach($recetas as $key)
+        <li> {{ $key }} </li>
+    @endforeach
 
 
-<h1>Categorias</h1>
+    <h1>Categorias</h1>
 
-@foreach($categorias as $key)
-    <li> {{ $key }} </li>
-@endforeach
+    @foreach($categorias as $key)
+        <li> {{ $key }} </li>
+    @endforeach
+
+@endsection

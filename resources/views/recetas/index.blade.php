@@ -12,7 +12,7 @@
         <table class="table">
             <thead class="bg-primary text-light">
                 <tr>
-                    <th scole="col">Título</th>
+                    <th scole="col">Títulos</th>
                     <th scole="col">Categoría</th>
                     <th scole="col">Acciones</th>
                 </tr>

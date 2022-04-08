@@ -33,9 +33,9 @@
                     <label for="categoria">Categoria</label>
                     <select name="categoria" class="form-control @error('categoria') is-invalid @enderror" id="categoria">
                         <option value="" selected disabled>Seleccione su categoría</option>
-                        @foreach ($categorias as $id => $categoria)
-                            <option value="{{ $id }}" {{ old('categoria') == $id ? 'selected' : '' }}>
-                                {{ $categoria }}</option>
+                        @foreach ($categorias as $categoria)
+                            <option value="{{ $categoria->id }}" {{ old('categoria') == $categoria->id ? 'selected' : '' }}>
+                                {{ $categoria->nombre }}</option>
                         @endforeach
                     </select>
                     @error('categoria')
@@ -95,5 +95,5 @@
 @section('scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.3.1/trix.js"
         integrity="sha512-/1nVu72YEESEbcmhE/EvjH/RxTg62EKvYWLG3NdeZibTCuEtW5M4z3aypcvsoZw03FAopi94y04GhuqRU9p+CQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
 @endsection

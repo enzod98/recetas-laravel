@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\CategoriaReceta;
 use App\Receta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -18,12 +19,14 @@ class RecetaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth', ['except' => 'show']);  //Middleware para sólo autenticados, a excepción del método show
     }
 
     public function index()
     {
-        return view('recetas.index');
+        $recetasUsuario = Auth::user()->recetas;
+
+        return view('recetas.index')->with('recetas', $recetasUsuario);
     }
 
     /**
@@ -34,7 +37,12 @@ class RecetaController extends Controller
     public function create()
     {
         //Básicamente un SELECT nombre, id FROM categoria_receta
-        $categorias = DB::table('categoria_receta')->get()->pluck('nombre', 'id');
+        $categorias = DB::table('categoria_recetas')->get()->pluck('nombre', 'id');
+        //De esta forma obtenemos las categorías SIN hacer uso del modelo
+
+
+        //Con el modelo
+        $categorias = CategoriaReceta::all(['id', 'nombre']);
 
         return view('recetas.create', compact( [ 'categorias' ] ));
     }
@@ -67,13 +75,22 @@ class RecetaController extends Controller
         $img->save();
 
         //Almacenar en DB sin usar un modelo
-        DB::table( 'recetas' )->insert([
+        // DB::table( 'recetas' )->insert([
+        //     'titulo' => $data['titulo'],
+        //     'categoria_id' => $data['categoria'],
+        //     'preparacion' => $data['preparacion'],
+        //     'ingredientes' => $data['ingredientes'],
+        //     'imagen' => $ruta_imagen,
+        //     'user_id' => Auth::user()->id
+        // ]);
+
+        //Almacenar en BD con un modelo
+        auth()->user()->recetas()->create([
             'titulo' => $data['titulo'],
             'categoria_id' => $data['categoria'],
             'preparacion' => $data['preparacion'],
             'ingredientes' => $data['ingredientes'],
-            'imagen' => $ruta_imagen,
-            'user_id' => Auth::user()->id
+            'imagen' => $ruta_imagen
         ]);
 
         //redireccionamiento
@@ -86,9 +103,21 @@ class RecetaController extends Controller
      * @param  \App\Receta  $receta
      * @return \Illuminate\Http\Response
      */
+
+    //public function show($receta) //Esto recibimos en versiones anteriores de Laravel
     public function show(Receta $receta)
     {
-        //
+        //En el objeto Receta que recibimos como parámetro de la función
+        //ya recibimos toda la info del id seleccionado
+        //sin embargo en versiones anteriores de laravel esto no era así
+
+        //Algunos métodos para obtener información de la receta en versiones antiguas de Laravel:
+        //$receta = Receta::find($receta);
+        //$receta = Receta::findOrFail($receta);
+
+
+
+        return view('recetas.show', compact('receta'));
     }
 
     /**

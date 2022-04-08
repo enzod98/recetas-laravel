@@ -15,6 +15,7 @@ class User extends Authenticatable
      *
      * @var array
      */
+    /*  CON EL FILLABLE LARAVEL PROTEGE LOS CAMPOS QUE SE PUEDEN REGISTRAR  */
     protected $fillable = [
         'name', 'email', 'password', 'paginaweb'
     ];
@@ -36,4 +37,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //  RELACIÓN DE UNO A MUCHOS ENTRE USUARIO Y RECETAS
+    public function recetas()
+    {
+        return $this->hasMany(Receta::class);
+    }
 }

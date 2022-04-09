@@ -128,7 +128,9 @@ class RecetaController extends Controller
      */
     public function edit(Receta $receta)
     {
-        //
+        $categorias = CategoriaReceta::all(['id', 'nombre']);
+
+        return view( 'recetas.edit', compact( 'categorias', 'receta'));
     }
 
     /**
@@ -140,7 +142,37 @@ class RecetaController extends Controller
      */
     public function update(Request $request, Receta $receta)
     {
-        //
+
+        //Revisar el policy
+        $this->authorize('update', $receta);
+
+        //Validación
+        $data = $request->validate([
+            'titulo' => 'required|min:6',
+            'categoria' => 'required',
+            'preparacion' => 'required',
+            'ingredientes' => 'required'
+        ]);
+
+        //Si el usuario cambia su imagen
+        if( request('imagen') ){
+            $ruta_imagen = $request[ 'imagen' ]->store( 'uploads-recetas', 'public' );
+
+            //Resize de la imagen
+            $img = Image::make( public_path("storage/" . $ruta_imagen))->fit(1000, 550);
+            $img->save();
+
+            $receta->imagen = $ruta_imagen;
+        }
+
+        $receta->titulo = $data['titulo'];
+        $receta->preparacion = $data['preparacion'];
+        $receta->ingredientes = $data['ingredientes'];
+        $receta->categoria_id = $data['categoria'];
+
+        $receta->save();
+
+        return redirect()->action('RecetaController@index');
     }
 
     /**

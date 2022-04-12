@@ -188,6 +188,6 @@ class RecetaController extends Controller
         //Eliminar
         $receta->delete();
 
-        return redirect()->action('RecetaController@Index');
+        return redirect()->action('RecetaController@index');
     }
 }

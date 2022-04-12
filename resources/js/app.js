@@ -3,6 +3,8 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+import VueSweetAlert2 from 'vue-sweetalert2'
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 require('./bootstrap');
 
@@ -21,8 +23,10 @@ window.Vue = require('vue');
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.use(VueSweetAlert2);
 Vue.config.ignoredElements = ['trix-editor', 'trix-toolbar'];
 Vue.component('fecha-receta', require('./components/FechaReceta.vue').default);
+Vue.component('eliminar-receta', require('./components/EliminarReceta.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

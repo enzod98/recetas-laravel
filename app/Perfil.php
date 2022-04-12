@@ -8,7 +8,7 @@ class Perfil extends Model
 {
     //RELACIÓN DE UNO A UNO CON USER
     public function usuario(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
 }

@@ -8,6 +8,11 @@ use Intervention\Image\Facades\Image;
 
 class PerfilController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => 'show']);
+    }
+
     /**
      * Display the specified resource.
      *
@@ -16,9 +21,10 @@ class PerfilController extends Controller
      */
     public function show(Perfil $perfil)
     {
+        
         return view('perfiles.show', compact('perfil'));
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -27,6 +33,7 @@ class PerfilController extends Controller
      */
     public function edit(Perfil $perfil)
     {
+        $this->authorize('view', $perfil);
         return view('perfiles.edit', compact('perfil'));
     }
 
@@ -39,6 +46,9 @@ class PerfilController extends Controller
      */
     public function update(Request $request, Perfil $perfil)
     {
+        //Policy
+        $this->authorize('update', $perfil);
+        
         //Validar
         $data = request()->validate([
             'nombre' => 'required',
@@ -77,16 +87,5 @@ class PerfilController extends Controller
 
         //Redireccionar
         return redirect()->action('RecetaController@index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Perfil  $perfil
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Perfil $perfil)
-    {
-        //
     }
 }

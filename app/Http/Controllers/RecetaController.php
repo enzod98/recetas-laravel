@@ -25,10 +25,17 @@ class RecetaController extends Controller
     public function index()
     {
         $usuario = auth()->user();
-        $recetasUsuario = Auth::user()->recetas;
+
+        //Recetas sin paginación
+        // $recetasUsuario = Auth::user()->recetas;
+
+        //Recetas con paginación
+        $recetasUsuario = Receta::where('user_id', $usuario->id)->paginate(2);
+
 
         return view('recetas.index')
-            ->with('recetas', $recetasUsuario);
+            ->with('recetas', $recetasUsuario)
+            ->with('recetasFavoritas', $usuario->likes);
     }
 
     /**
@@ -117,9 +124,16 @@ class RecetaController extends Controller
         //$receta = Receta::find($receta);
         //$receta = Receta::findOrFail($receta);
 
+        //Obtener el estado de like de la receta para el usuario
+        $like = (auth()-> user() )
+            ? auth()->user()->likes->contains($receta->id) //Función para encontrar el like a la receta especificada
+            : false;
 
 
-        return view('recetas.show', compact('receta'));
+        //Pasa la cantidad de likes a la vista
+        $likes = $receta->likes->count();
+
+        return view('recetas.show', compact('receta', 'like', 'likes'));
     }
 
     /**
@@ -130,6 +144,8 @@ class RecetaController extends Controller
      */
     public function edit(Receta $receta)
     {
+        $this->authorize('view', $receta);
+
         $categorias = CategoriaReceta::all(['id', 'nombre']);
 
         return view( 'recetas.edit', compact( 'categorias', 'receta'));

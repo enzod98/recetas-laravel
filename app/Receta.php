@@ -21,4 +21,9 @@ class Receta extends Model
     public function autor(){
         return $this->belongsTo(User::class, 'user_id');  //Especificar el nombre del FK en la tabla Receta
     }
+
+    //Likes de la receta
+    public function likes(){
+        return $this->belongsToMany(User::class, 'likes_receta');
+    }
 }

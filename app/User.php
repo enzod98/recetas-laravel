@@ -58,4 +58,9 @@ class User extends Authenticatable
     public function perfil(){
         return $this->hasOne(Perfil::class);
     }
+
+    //Recetas que le gustaron al usuario
+    public function likes(){
+        return $this->belongsToMany(Receta::class, 'likes_receta');
+    }
 }

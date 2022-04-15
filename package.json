@@ -27,6 +27,7 @@
         "browser-sync-webpack-plugin": "^2.3.0",
         "moment": "^2.29.2",
         "node-sass": "^4.0.1",
+        "owl.carousel": "^2.3.4",
         "sass-loader": "^10",
         "vue-sweetalert2": "^5.0.2"
     }

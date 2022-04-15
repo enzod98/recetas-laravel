@@ -13,9 +13,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', 'InicioController@index')->name('inicio.index');
 
 // Route::get('/recetas', 'RecetaController@index')->name('recetas.index');
 // Route::get('/recetas/create', 'RecetaController@create')->name('recetas.create');
@@ -27,6 +25,11 @@ Route::get('/', function () {
 
 //Todas las rutas comentadas arribas se pueden resumir en la siguiente linea:
 Route::resource('recetas', 'RecetaController');
+
+/* BUSCADOR */
+Route::get('/buscar', 'RecetaController@search')->name('buscar.show');
+
+Route::get('/categoria/{categoriaReceta}', 'CategoriaController@show')->name('categoria.show');
 
 Route::get('/perfiles/{perfil}', 'PerfilController@show')->name('perfiles.show');
 Route::get('/perfiles/{perfil}/edit', 'PerfilController@edit')->name('perfiles.edit');

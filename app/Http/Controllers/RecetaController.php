@@ -19,7 +19,7 @@ class RecetaController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth', ['except' => 'show']);  //Middleware para sólo autenticados, a excepción del método show
+        $this->middleware('auth', ['except' => ['show', 'search']]);  //Middleware para sólo autenticados, a excepción del método show
     }
 
     public function index()
@@ -207,5 +207,14 @@ class RecetaController extends Controller
         $receta->delete();
 
         return redirect()->action('RecetaController@index');
+    }
+
+    public function search(Request $request){
+        $busqueda = $request['buscar'];
+
+        $recetas = Receta::where('titulo', 'like', '%' . $busqueda . '%')->paginate(1);
+        $recetas->appends(['buscar' => $busqueda]);
+        return view('busquedas.show', compact('recetas', 'busqueda' ));
+
     }
 }
